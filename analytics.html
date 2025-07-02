@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindOS Analytics Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            flex-grow: 1;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0071CE; /* Walmart Blue */
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #004C91; /* Deeper Blue */
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        .data-section {
+            background-color: #f8f8f8;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .data-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        .data-item:last-child {
+            border-bottom: none;
+        }
+        .data-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .data-value {
+            color: #0071CE;
+            font-weight: 700;
+        }
+        .note {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
+            background-color: #FFC220; /* Walmart Yellow */
+            color: #333; /* Dark text for contrast */
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .back-button:hover {
+            background-color: #E5B000; /* Darker yellow */
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Interaction Analytics</h1>
+        <p class="text-center text-gray-700 mb-8">
+            This dashboard simulates the collection of user interaction data for adaptive UI insights.
+            Data is logged to the browser console for demonstration purposes.
+        </p>
+
+        <h2>Real-time Interactions</h2>
+        <div class="data-section">
+            <div class="data-item">
+                <span class="data-label">Total Clicks:</span>
+                <span id="click-count" class="data-value">0</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Last Click Position:</span>
+                <span id="last-click-pos" class="data-value">N/A</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Scroll Events:</span>
+                <span id="scroll-count" class="data-value">0</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Last Scroll Position:</span>
+                <span id="last-scroll-pos" class="data-value">N/A</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Last Gaze Position (Mouse):</span>
+                <span id="last-gaze-pos" class="data-value">N/A</span>
+            </div>
+        </div>
+
+        <h2>Simulated Adaptive Insights</h2>
+        <div class="data-section">
+            <div class="data-item">
+                <span class="data-label">Engagement Score:</span>
+                <span id="engagement-score" class="data-value">Calculating...</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Preferred Content Area:</span>
+                <span id="preferred-area" class="data-value">Analyzing...</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Decision Speed:</span>
+                <span id="decision-speed" class="data-value">Analyzing...</span>
+            </div>
+        </div>
+
+        <p class="note">
+            In a real-world application, this data would be sent to a backend server for processing and
+            used to dynamically adjust UI elements, content recommendations, or AR/VR experiences.
+        </p>
+
+        <div class="text-center">
+            <a href="index.html" class="back-button">Back to Main Site</a>
+        </div>
+    </div>
+
+    <script>
+        let clickCount = 0;
+        let scrollCount = 0;
+        let lastClickTime = null;
+        let interactionTimestamps = []; // To track interaction speed
+
+        const clickCountEl = document.getElementById('click-count');
+        const lastClickPosEl = document.getElementById('last-click-pos');
+        const scrollCountEl = document.getElementById('scroll-count');
+        const lastScrollPosEl = document.getElementById('last-scroll-pos');
+        const lastGazePosEl = document.getElementById('last-gaze-pos');
+        const engagementScoreEl = document.getElementById('engagement-score');
+        const preferredAreaEl = document.getElementById('preferred-area');
+        const decisionSpeedEl = document.getElementById('decision-speed');
+
+        // --- Click Tracking ---
+        document.body.addEventListener('click', (event) => {
+            clickCount++;
+            clickCountEl.innerText = clickCount;
+            lastClickPosEl.innerText = `X: ${event.clientX}, Y: ${event.clientY}`;
+            console.log(`Click: X=${event.clientX}, Y=${event.clientY}`);
+
+            const currentTime = Date.now();
+            if (lastClickTime !== null) {
+                const timeDiff = currentTime - lastClickTime;
+                interactionTimestamps.push(timeDiff);
+                updateAdaptiveInsights();
+            }
+            lastClickTime = currentTime;
+        });
+
+        // --- Scroll Tracking ---
+        window.addEventListener('scroll', () => {
+            scrollCount++;
+            scrollCountEl.innerText = scrollCount;
+            lastScrollPosEl.innerText = `X: ${window.scrollX}, Y: ${window.scrollY}`;
+            console.log(`Scroll: X=${window.scrollX}, Y=${window.scrollY}`);
+        });
+
+        // --- Gaze Tracking (Simulated via Mouse Movement) ---
+        let gazeTimeout;
+        document.body.addEventListener('mousemove', (event) => {
+            clearTimeout(gazeTimeout);
+            gazeTimeout = setTimeout(() => {
+                lastGazePosEl.innerText = `X: ${event.clientX}, Y: ${event.clientY}`;
+                // In a real scenario, this data would be sent to a server more frequently
+                // console.log(`Gaze (Mouse): X=${event.clientX}, Y=${event.clientY}`);
+            }, 100); // Update gaze position every 100ms of inactivity
+        });
+
+        // --- Adaptive Insights Simulation ---
+        function updateAdaptiveInsights() {
+            // Simulate Engagement Score based on clicks and scroll
+            const totalInteractions = clickCount + scrollCount;
+            engagementScoreEl.innerText = `${Math.min(100, 50 + totalInteractions * 2)}%`; // Simple calculation
+
+            // Simulate Preferred Content Area (very basic, could be based on gaze/scroll zones)
+            const areas = ['Hero Section', 'Product Grid', 'Demo Section', 'About Section'];
+            preferredAreaEl.innerText = areas[Math.floor(Math.random() * areas.length)];
+
+            // Simulate Decision Speed based on time between clicks
+            if (interactionTimestamps.length > 0) {
+                const avgTimeDiff = interactionTimestamps.reduce((a, b) => a + b, 0) / interactionTimestamps.length;
+                if (avgTimeDiff < 500) {
+                    decisionSpeedEl.innerText = 'Very Fast';
+                } else if (avgTimeDiff < 1500) {
+                    decisionSpeedEl.innerText = 'Fast';
+                } else if (avgTimeDiff < 3000) {
+                    decisionSpeedEl.innerText = 'Moderate';
+                } else {
+                    decisionSpeedEl.innerText = 'Deliberate';
+                }
+            } else {
+                decisionSpeedEl.innerText = 'N/A (No clicks yet)';
+            }
+        }
+
+        // Initial update of insights
+        updateAdaptiveInsights();
+
+        // Simulate sending data to a server (for demonstration)
+        setInterval(() => {
+            const analyticsData = {
+                timestamp: new Date().toISOString(),
+                clicks: clickCount,
+                scrolls: scrollCount,
+                lastClick: lastClickPosEl.innerText,
+                lastScroll: lastScrollPosEl.innerText,
+                lastGaze: lastGazePosEl.innerText,
+                engagementScore: engagementScoreEl.innerText,
+                preferredArea: preferredAreaEl.innerText,
+                decisionSpeed: decisionSpeedEl.innerText
+            };
+            console.log("Simulating data sent to server:", analyticsData);
+            // In a real app: fetch('/api/analytics', { method: 'POST', body: JSON.stringify(analyticsData) });
+        }, 10000); // Send data every 10 seconds
+    </script>
+</body>
+</html>

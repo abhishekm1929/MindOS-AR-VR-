@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<body>
+   
+    
+    <div id="ar-modal" style="display: none;">
+        <p id="loading-message">Loading AR experience...</p>
+        <canvas id="ar-canvas"></canvas>
+        <button id="close-ar-modal">Close AR</button>
+    </div>
+
+
+<head>
+
+
+
+<head>
+    <title>Your AR Project</title>
+    <link rel="stylesheet" href="css/style.css"> 
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.165.0/three.min.js"></script>
+
+    <script src="js/ar.js"></script> 
+    
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
+    
+    <script src="js/ar-tryon.js"></script> 
+
+    <script src="js/main.js"></script>
+    <script src="js/cart-page.js"></script>
+    <script src="js/cognitive-adapt.js"></script> 
+
+</head>
+
+
+
+
+
+
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>MindOS AR/VR Store - Intelligent Try-On</title>
+    <link rel="icon" href="mindos.jpg.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <script src="library.js" defer></script>
+    <script src="main.js" defer></script>
+
+    <style>
+        /* Your existing CSS styles for #ar-modal, #ar-content, etc. */
+        #ar-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #ar-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        #ar-canvas {
+            display: block;
+            /* Important for Three.js */
+            width: 100%;
+            height: 400px;
+            /* Adjust as needed for non-AR view */
+            background-color: #333;
+            margin-top: 15px;
+        }
+
+        #close-ar-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #888;
+        }
+
+        #loading-message {
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .product-button {
+            /* General button style, if not already in style.css */
+            padding: 10px 20px;
+            margin: 10px 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-button:hover {
+            background-color: #0056b3;
+        }
+
+        .add-to-cart-btn a {
+            color: inherit;
+            /* Ensure link color is inherited from button */
+            text-decoration: none;
+            /* Remove underline from link */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="#">MindOS</a></h1>
+            <nav id="main-nav">
+                <a href="#">Home</a>
+                <a href="#products">Wearables</a>
+                <a href="#furniture-products">Furniture</a>
+                <a href="#demo">Live Demo</a>
+                <a href="analytics.html">Analytics</a>
+                <a href="#about">About</a>
+
+                <a href="#" id="cart-icon" class="cart-icon">
+                    <a href="shopping-cart.html">🛒Cart</a>
+                    <span id="cart-count" class="cart-count"></span>
+                </a>
+            </nav>
+            <button class="menu-toggle" aria-label="Toggle navigation menu">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container">
+                <h2>Experience the Future of Shopping with MindOS</h2>
+                <p>Our intelligent AR/VR platform adapts to your unique preferences, offering personalized try-on
+                    experiences
+                    like never before.</p>
+                <a href="#products" class="cta-button">Explore Products</a>
+            </div>
+        </section>
+
+        <section id="products">
+            <div class="container">
+                <h2>Try Our Smart Picks (Wearables)</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="sunglasses.jpg" alt="Adaptive Glasses" />
+                        <h3>Adaptive Glasses</h3>
+                        <p>Instant fit and style recommendations with virtual try-on powered by MindOS AI.</p>
+                        <p class="price">$199.99</p>
+                        <button class="product-button" onclick="launchAR('sunglasses')">Try in AR</button>
+                        <button class="add-to-cart-btn" data-product-name="sunglasses" data-product-price="199.99"><a
+                                href="shopping-cart.html">Add to Cart</a></button>
+                    </div>
+
+                    <div class="product-card">
+                        <div><img src="noise-curve-smartwatch--19-2024-03.webp" alt="Cognitive Smartwatch"></div>
+                        <h3>Cognitive Smartwatch</h3>
+                        <p>Experience a personalized interface that learns your daily routines and adapts.</p>
+                        <p class="price">$249.99</p>
+                        <button class="product-button" onclick="launchAR('watch')">Try in AR</button>
+                        <button class="add-to-cart-btn" data-product-name="watch" data-product-price="249.99"><a
+                                href="shopping-cart.html">Add to Cart</a></button>
+                    </div>
+
+                    <div class="product-card">
+                        <h3>Dynamic VR Hat</h3>
+                        <img src="vr-hat.jpg" alt="Dynamic VR Hat" />
+                        <p>Experience immersive virtual reality with a hat that adapts to your environment.</p>
+                        <p>Virtually try on various headwear styles and see how they suit you in real-time.</p>
+                        <p class="price">$89.99</p>
+                        <button class="product-button" onclick="launchAR('hat')">Try in AR</button>
+                        <button class="add-to-cart-btn" data-product-name="hat" data-product-price="89.99"><a
+                                href="shopping-cart.html">Add to Cart</a></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="furniture-products">
+            <div class="container">
+                <h2>Furnish Your Space with AR/VR</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="new-sofa.jpg" alt="Modular Sofa">
+                        <h3>Modular Sofa</h3>
+                        <p>Place virtual sofas in your living room to check size, style, and fit instantly.</p>
+                        <p class="price">$1200.00</p>
+                        <button class="product-button" onclick="launchAR('sofa')">Try in AR</button>
+                        <button class="add-to-cart-btn" data-product-name="sofa" data-product-price="1200.00"><a
+                                href="shopping-cart.html">Add to Cart</a></button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="cofee-t.jpg" alt="AR Adaptive Coffee Table" />
+                        <h3>Coffee Table</h3>
+                        <p>Visualize different finishes and designs in your space before making a choice.</p>
+                        <p class="price">$350.00</p>
+                        <button class="product-button" onclick="launchAR('coffee-table')">Try in AR</button>
+                        <button class="add-to-cart-btn" data-product-name="coffee-table" data-product-price="350.00"><a
+                                href="shopping-cart.html">Add to Cart</a></button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="lamp.jpg" alt="AR Floor Lamp" />
+                        <h3>Ambient Floor Lamp</h3>
+                        <p>See how lighting fixtures impact your room's ambiance and layout.</p>
+                        <p class="price">$150.00</p>
+                        <button class="product-button" onclick="launchAR('lamp')">Try in AR</button>
+                        <button class="add-to-cart-btn" data-product-name="lamp" data-product-price="150.00"><a
+                                href="shopping-cart.html">Add to Cart</a></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="demo">
+            <div class="container">
+                <h2>See MindOS In Action</h2>
+                <p>This interactive demo showcases how our system adapts to your decision style and provides a tailored
+                    experience.</p>
+                <button onclick="simulateCognitiveAdaptation()">Trigger Adaptive Demo</button>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <h2>About MindOS</h2>
+                <p>MindOS is at the forefront of AI-powered augmented and virtual reality experiences. We build
+                    intelligent
+                    systems that learn and adapt to individual user behavior, offering unprecedented personalization in
+                    digital
+                    interactions.</p>
+                <p>Our mission is to bridge the gap between the physical and digital worlds, making virtual try-ons,
+                    adaptive
+                    interfaces, and smart environments intuitive and truly user-centric.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 AIgnite. All rights reserved. | Powered by Intelligent AR/VR Systems</p>
+        </div>
+    </footer>
+
+    <div id="ar-modal">
+        <div id="ar-content">
+            <button id="close-ar-modal">&times;</button>
+            <p id="loading-message">Loading AR experience...</p>
+            <canvas id="ar-canvas"></canvas>
+        </div>
+    </div>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.165.0/three.min.js"></script>
+
+    <script src="js/ar.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
+
+    <script src="ar-tryon.js"></script>
+
+    <script src="main.js"></script>
+    <script src="cart-page.js"></script>
+    <script src="cognitive-adapt.js"></script>
+    <script src="library.js"></script>
+    <script> -->
+       
+    <script>
+        // Function to launch AR experience
+        function launchAR(product) {
+            const arModal = document.getElementById('ar-modal');
+            const loadingMessage = document.getElementById('loading-message');
+            const arCanvas = document.getElementById('ar-canvas');
+
+            // Show the AR modal
+            arModal.style.display = 'flex';
+
+            // Load the AR experience based on the product
+            loadingMessage.textContent = `Loading AR experience for ${product}...`;
+
+            // Initialize AR experience (this is a placeholder, replace with actual AR initialization code)
+            initializeARExperience(product, arCanvas);
+        }
+
+        // Function to close the AR modal
+        document.getElementById('close-ar-modal').addEventListener('click', function () {
+            document.getElementById('ar-modal').style.display = 'none';
+        });
+
+        // Placeholder function for initializing AR experience
+        function initializeARExperience(product, canvas) {
+            // Implement your AR initialization logic here
+            console.log(`Initializing AR for ${product}`);
+            // Example: Load 3D model, set up scene, etc.
+        }
+    </script>
+
+    <script src="cart-page.js"></script>
+    <script src="js/cognitive-adapt.js"></script>
+    
+</body>
+
+</html>
