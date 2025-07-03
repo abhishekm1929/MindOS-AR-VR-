@@ -1,4 +1,4 @@
-MindOS: Adaptive AR/VR Shopping Platform
+🌟MindOS: Adaptive AR/VR Shopping Platform
 Personalized shopping powered by real-time cognitive behavior analysis using AI, ML, and immersive AR/VR experiences. MindOS transforms the e-commerce experience with adaptive interfaces, making online shopping intuitive for all – including neurodiverse users.
 
 🌟 Key Features
@@ -20,7 +20,7 @@ AI/ML: Basic behavioral analysis (clicks, scrolls, gaze patterns simulated), ada
 
 Analytics: Interaction logging, UI response heatmaps (in development)
 
-Hosting: GitHub Pages (or Netlify for advanced hosting)
 
-Optional Backend (expandable): Firebase, Node.js (for data persistence)
+
+
 
