@@ -353,7 +353,7 @@ section h2::after {
 
 #demo button:hover,
 #demo button:focus {
-    background-color: #00509D; /* Darker shade of Walmart Blue */
+    background-color: #005cb2; /* Darker shade of Walmart Blue */
     transform: translateY(-2px) scale(1.02);
     box-shadow: 0 0 0 3px var(--primary-color), 0 5px 15px rgba(0,0,0,0.2);
 }

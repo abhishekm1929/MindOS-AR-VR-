@@ -443,20 +443,18 @@ function initThreeJSForAR() {
         markerRoot.add(productMesh); // Add product to the markerRoot
     }
 
-    // Animation loop for AR
-    const animateAR = () => {
-        animationFrameId = requestAnimationFrame(animateAR); // Store the ID
+   function animateAR() {
+    requestAnimationFrame(animateAR);
 
-        if (arToolkitSource && arToolkitSource.ready !== false) {
-            arToolkitContext.update(arToolkitSource.domElement);
-        }
+    if (arToolkitSource && arToolkitSource.ready && arToolkitContext) {
+        arToolkitContext.update(arToolkitSource.domElement);
+    }
 
-        // Optional: Add rotation to the product here if you want it to spin in AR
-        // if (productMesh) {
-        //     productMesh.rotation.y += 0.005;
-        // }
-
+    if (renderer && scene && camera) {
         renderer.render(scene, camera);
-    };
-    animateAR();
+    }
+}
+
+// Start the animation loop
+animateAR();
 }
